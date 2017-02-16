@@ -104,8 +104,8 @@
     <Compile Include="Content\ControlsModernProgressRing.xaml.cs">
       <DependentUpon>ControlsModernProgressRing.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Content\ControlsStylesDataGrid.xaml.cs">
-      <DependentUpon>ControlsStylesDataGrid.xaml</DependentUpon>
+    <Compile Include="Content\CloneSite.xaml.cs">
+      <DependentUpon>CloneSite.xaml</DependentUpon>
     </Compile>
     <Compile Include="Content\ControlsStylesSampleForm.xaml.cs">
       <DependentUpon>ControlsStylesSampleForm.xaml</DependentUpon>
@@ -116,6 +116,15 @@
     <Compile Include="Content\ControlsStylesDate.xaml.cs">
       <DependentUpon>ControlsStylesDate.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Content\LoremIpsum.xaml.cs">
+      <DependentUpon>LoremIpsum.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Content\LoremIpsumList.xaml.cs">
+      <DependentUpon>LoremIpsumList.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Content\LoremIpsumSplit.xaml.cs">
+      <DependentUpon>LoremIpsumSplit.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Content\ModernFrame\CancelNavigateSample.xaml.cs">
       <DependentUpon>CancelNavigateSample.xaml</DependentUpon>
     </Compile>
@@ -125,6 +134,7 @@
     <Compile Include="Content\ModernFrame\Sample.xaml.cs">
       <DependentUpon>Sample.xaml</DependentUpon>
     </Compile>
+    <Compile Include="LoremIpsumLoader.cs" />
     <Compile Include="Pages\DpiAwareness.xaml.cs">
       <DependentUpon>DpiAwareness.xaml</DependentUpon>
     </Compile>
@@ -320,7 +330,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Content\ControlsStylesDataGrid.xaml">
+    <Page Include="Content\CloneSite.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -337,6 +347,18 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Content\ControlsStylesDate.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Content\LoremIpsum.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Content\LoremIpsumList.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Content\LoremIpsumSplit.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

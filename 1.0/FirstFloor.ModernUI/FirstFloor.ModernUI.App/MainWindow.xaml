@@ -9,7 +9,7 @@
     
     <mui:ModernWindow.TitleLinks>
         <mui:Link DisplayName="Settings" Source="/Pages/Settings.xaml" />
-        <mui:Link DisplayName="Help" Source="https://github.com/firstfloorsoftware/mui/wiki" />
+        <mui:Link DisplayName="Help" Source="http://help.lanteria.com" />
     </mui:ModernWindow.TitleLinks>
 
     <mui:ModernWindow.MenuLinkGroups>
@@ -18,7 +18,7 @@
                 <mui:Link DisplayName="Introduction" Source="/Pages/Introduction.xaml" />
             </mui:LinkGroup.Links>
         </mui:LinkGroup>
-        <mui:LinkGroup DisplayName="Layout">
+      <!--  <mui:LinkGroup DisplayName="Layout">
             <mui:LinkGroup.Links>
                 <mui:Link DisplayName="Wireframe" Source="/Pages/LayoutWireframe.xaml" />
                 <mui:Link DisplayName="Basic" Source="/Pages/LayoutBasic.xaml" />
@@ -26,20 +26,20 @@
                 <mui:Link DisplayName="List" Source="/Pages/LayoutList.xaml"  />
                 <mui:Link DisplayName="Tab" Source="/Pages/LayoutTab.xaml" />
             </mui:LinkGroup.Links>
-        </mui:LinkGroup>
-        <mui:LinkGroup DisplayName="Controls">
+        </mui:LinkGroup> -->
+        <mui:LinkGroup DisplayName="Tools">
             <mui:LinkGroup.Links>
-                <mui:Link DisplayName="Styles" Source="/Pages/ControlsStyles.xaml" />
-                <mui:Link DisplayName="Modern controls" Source="/Pages/ControlsModern.xaml" />
+                <mui:Link DisplayName="Tools" Source="/Pages/ControlsStyles.xaml" />
+                <!--<mui:Link DisplayName="Modern controls" Source="/Pages/ControlsModern.xaml" />-->
             </mui:LinkGroup.Links>
         </mui:LinkGroup>
-        <mui:LinkGroup DisplayName="Advanced">
+       <!-- <mui:LinkGroup DisplayName="Advanced">
             <mui:LinkGroup.Links>
                 <mui:Link DisplayName="DPI awareness" Source="/Pages/DpiAwareness.xaml" />
                 <mui:Link DisplayName="Navigation" Source="/Pages/Navigation.xaml" />
                 <mui:Link DisplayName="Content Loader" Source="/Pages/ContentLoader.xaml" />
             </mui:LinkGroup.Links>
-        </mui:LinkGroup>
+        </mui:LinkGroup>-->
         <mui:LinkGroup DisplayName="Settings" GroupKey="settings">
             <mui:LinkGroup.Links>
                 <mui:Link DisplayName="Software" Source="/Pages/Settings.xaml" />

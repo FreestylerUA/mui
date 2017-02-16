@@ -15,6 +15,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Microsoft.SharePoint;
 using Microsoft.SharePoint.Administration;
+using Microsoft.SharePoint.Administration.Claims;
 using System.ComponentModel;
 using System.Globalization;
 using FirstFloor.ModernUI.Windows.Controls;
@@ -38,7 +39,7 @@ namespace FirstFloor.ModernUI.App.Content
         public string Url { get; set; }
     }
 
-    public partial class ControlsStylesDataGrid : UserControl
+    public partial class CloneSite : UserControl
     {
         public string siteURL { get; set; }
         public int Port;
@@ -75,7 +76,7 @@ namespace FirstFloor.ModernUI.App.Content
             }
         }
 
-        public ControlsStylesDataGrid()
+        public CloneSite()
         {
             InitializeComponent();
             this.TextEvents.Text = eventLogMessage;
@@ -354,20 +355,22 @@ namespace FirstFloor.ModernUI.App.Content
                         LogMessage("\nDisabling features...");
                         using (SPSite siteCollection = new SPSite(newURL.AbsoluteUri+"/es"))
                         {
-                            SPWeb newWeb = siteCollection.OpenWeb();
-                            SPGroup esHR = newWeb.Site.RootWeb.Groups["ES HR"];
-                            SPUser sysacc = newWeb.Site.RootWeb.EnsureUser("SHAREPOINT\\system");
-                            SPUser me = newWeb.Site.RootWeb.EnsureUser(username);
-                            esHR.AddUser(sysacc);
-                            esHR.AddUser(me);
-                            newWeb.Site.RootWeb.Update();
-                            try
+                        SPWeb newWeb = siteCollection.OpenWeb();
+                        SPGroup esHR = newWeb.Site.RootWeb.Groups["ES HR"];
+                        SPUser sysacc = newWeb.Site.RootWeb.EnsureUser("SHAREPOINT\\system");
+                        SPClaimProviderManager cpm = SPClaimProviderManager.Local;
+                        SPClaim userClaim = cpm.ConvertIdentifierToClaim(username, SPIdentifierTypes.WindowsSamAccountName);
+                        SPUser me = newWeb.Site.RootWeb.EnsureUser(userClaim.ToEncodedString());
+                        esHR.AddUser(sysacc);
+                        esHR.AddUser(me);
+                        newWeb.Site.RootWeb.Update();
+                        try
                             {
                                 newWeb.Features.Remove(contentFeature.Id, true);
                                 newWeb.Features.Remove(webFeature.Id, true);
                                 newWeb.Features.Remove(sqlFeature.Id, true);
                             }
-                            catch (Exception ex)
+                        catch (Exception ex)
                             {
                                 LogMessage("Error uccured during feature deactivation: " + ex.Message);
                             }
