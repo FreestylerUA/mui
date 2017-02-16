@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using FirstFloor.ModernUI.Presentation;
 
 namespace FirstFloor.ModernUI.App.Pages
 {
@@ -23,6 +24,9 @@ namespace FirstFloor.ModernUI.App.Pages
         public Introduction()
         {
             InitializeComponent();
+            AppearanceManager.Current.AccentColor = Color.FromRgb(0xfa, 0x68, 0x00);
+            AppearanceManager.Current.ThemeSource = AppearanceManager.DarkThemeSource;
+
         }
-    }
+}
 }

@@ -17,9 +17,24 @@
     <SccLocalPath>SAK</SccLocalPath>
     <SccAuxPath>SAK</SccAuxPath>
     <SccProvider>SAK</SccProvider>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <PlatformTarget>x64</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -27,6 +42,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -40,9 +56,16 @@
   <PropertyGroup>
     <StartupObject>FirstFloor.ModernUI.App.App</StartupObject>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+  </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.SharePoint, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Microsoft.Windows.Shell">
       <HintPath>..\Binaries\Microsoft.Windows.Shell.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -69,9 +92,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="BingImage.cs" />
-    <Compile Include="Content\ContentLoaderImages.xaml.cs">
-      <DependentUpon>ContentLoaderImages.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Content\ContentLoaderIntro.xaml.cs">
       <DependentUpon>ContentLoaderIntro.xaml</DependentUpon>
     </Compile>
@@ -83,9 +103,6 @@
     </Compile>
     <Compile Include="Content\ControlsModernProgressRing.xaml.cs">
       <DependentUpon>ControlsModernProgressRing.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Content\ControlsModernWindow.xaml.cs">
-      <DependentUpon>ControlsModernWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Content\ControlsStylesDataGrid.xaml.cs">
       <DependentUpon>ControlsStylesDataGrid.xaml</DependentUpon>
@@ -113,8 +130,6 @@
     </Compile>
     <Compile Include="Pages\DpiAwarenessViewModel.cs" />
     <Compile Include="SampleFormViewModel.cs" />
-    <Compile Include="FlickrImageLoader.cs" />
-    <Compile Include="LoremIpsumLoader.cs" />
     <Compile Include="SampleDisabledCommand.cs" />
     <Compile Include="SampleParameterCommand.cs" />
     <Compile Include="SampleMsgBoxCommand.cs" />
@@ -140,9 +155,6 @@
     </Compile>
     <Compile Include="Content\ControlsModernButton.xaml.cs">
       <DependentUpon>ControlsModernButton.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Content\ControlsModernDialog.xaml.cs">
-      <DependentUpon>ControlsModernDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\ControlsStyles.xaml.cs">
       <DependentUpon>ControlsStyles.xaml</DependentUpon>
@@ -174,15 +186,6 @@
     <Compile Include="Pages\LayoutTab.xaml.cs">
       <DependentUpon>LayoutTab.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Content\LoremIpsum.xaml.cs">
-      <DependentUpon>LoremIpsum.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Content\LoremIpsumList.xaml.cs">
-      <DependentUpon>LoremIpsumList.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Content\LoremIpsumSplit.xaml.cs">
-      <DependentUpon>LoremIpsumSplit.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Content\SettingsAppearance.xaml.cs">
       <DependentUpon>SettingsAppearance.xaml</DependentUpon>
     </Compile>
@@ -207,6 +210,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="app.manifest" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -220,6 +224,7 @@
     <ProjectReference Include="..\FirstFloor.ModernUI\FirstFloor.ModernUI.csproj">
       <Project>{9a653a28-fe46-40e8-a14f-48b0e325165d}</Project>
       <Name>FirstFloor.ModernUI</Name>
+      <Private>True</Private>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -299,10 +304,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Content\ContentLoaderImages.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Content\ContentLoaderIntro.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -318,10 +319,6 @@
     <Page Include="Content\ControlsModernProgressRing.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Content\ControlsModernWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Content\ControlsStylesDataGrid.xaml">
       <SubType>Designer</SubType>
@@ -383,10 +380,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Content\ControlsModernDialog.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Pages\ControlsStyles.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -427,18 +420,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Content\LoremIpsum.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Content\LoremIpsumList.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Content\LoremIpsumSplit.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Content\SettingsAppearance.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -456,6 +437,21 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Assets\background.snowflakes.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.5">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.5 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\favicon.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -26,7 +26,7 @@
                 </ComboBox>
             </StackPanel>
 
-            <mui:ModernProgressRing IsActive="True" Width="80" Height="80" Style="{Binding SelectedItem.Tag, ElementName=CmbRingStyle}" />
+            <mui:ModernProgressRing IsActive="True" Width="80" Height="80"  />
         </StackPanel>
     </Grid>
 </UserControl>

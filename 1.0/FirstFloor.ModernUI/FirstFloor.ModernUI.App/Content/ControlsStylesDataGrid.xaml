@@ -9,26 +9,59 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
-        <Grid.Resources>
-            <!--Create list of enumeration values-->
-            <ObjectDataProvider x:Key="myEnum" MethodName="GetValues" ObjectType="{x:Type core:Enum}">
-                <ObjectDataProvider.MethodParameters>
-                    <x:Type Type="local:OrderStatus"/>
-                </ObjectDataProvider.MethodParameters>
-            </ObjectDataProvider>
-        </Grid.Resources>
-        
-        <DockPanel>
-            <TextBlock DockPanel.Dock="Top" Text="DATAGRID" Style="{StaticResource Heading2}" Margin="0,0,0,8" />
-            <DataGrid Name="DG1" ItemsSource="{Binding}" AutoGenerateColumns="False" >
-                <DataGrid.Columns>
-                    <mui:DataGridTextColumn Header="First Name"  Binding="{Binding FirstName}"/>
-                    <mui:DataGridTextColumn Header="Last Name" Binding="{Binding LastName}" />
-                    <mui:DataGridTextColumn Header="Email" Binding="{Binding Email}"/>
-                    <mui:DataGridCheckBoxColumn Header="Member" Binding="{Binding IsMember}" />
-                    <mui:DataGridComboBoxColumn Header="Order Status" SelectedItemBinding="{Binding Status}" ItemsSource="{Binding Source={StaticResource myEnum}}" />
-                </DataGrid.Columns>
-            </DataGrid>
-        </DockPanel>
+        <StackPanel HorizontalAlignment="Left" Margin="0,0,0,272">
+            <StackPanel Orientation="Horizontal">
+                <Button x:Name="GetWebs" Content="Get Sites" Click="StartProcess"  />
+                <Button x:Name="Clone" Content="Clone Selected" Click="Clone_Click" Margin="8,0,0,0" Visibility="Hidden"/>
+            </StackPanel>
+            <StackPanel HorizontalAlignment="Left" Margin="0,44,0,224" Width="464" >
+                <mui:ModernProgressRing x:Name="progressbar" IsActive="True" Width="80" Height="80" Visibility="Hidden" Margin="110,0" />
+            </StackPanel>
+        </StackPanel>
+        <StackPanel Margin="0,33,0,164">
+            <DataGrid Name="DG1" AutoGenerateColumns="False" SelectionMode="Single" CanUserAddRows="False" CanUserDeleteRows="False" ScrollViewer.VerticalScrollBarVisibility="Auto" Visibility="Hidden" >
+                    <DataGrid.Columns>
+                        <DataGridTemplateColumn Header="">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <CheckBox IsChecked="{Binding IsSelected, UpdateSourceTrigger=PropertyChanged}" Click="CheckBox_Click"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <mui:DataGridTextColumn Header="Name" Binding="{Binding Title}" IsReadOnly="True" Width="*" />
+                        <mui:DataGridTextColumn Header="Url" Binding="{Binding Url}" IsReadOnly="True" Width="*"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+        </StackPanel>
+        <StackPanel x:Name="Log" Margin="0,222,0,0" Visibility="Hidden">
+            <TextBlock Text="Events" FontWeight="Bold" Margin="0,0,0,8" />
+            <TextBox x:Name="TextEvents" Width="480" Height="200" HorizontalAlignment="Left" IsReadOnly="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" />
+        </StackPanel>
+        <StackPanel x:Name="CreateWebApp" Margin="0,33,0,203" Visibility="Hidden">
+            <TextBlock Text="Create new Web Application" Style="{StaticResource Heading2}" Margin="0,0,0,8" />
+            <mui:BBCodeBlock BBCode="New web application will be created during clone process. Please provide required information below (Get Sites button will break the process)" Margin="0,0,0,16"/>
+       </StackPanel>
+        <StackPanel x:Name="Form" Orientation="Vertical" Margin="0,102,0,97" Visibility="Hidden">
+            <StackPanel.Resources>
+                <Style TargetType="{x:Type StackPanel}">
+                    <Setter Property="Orientation" Value="Horizontal" />
+                    <Setter Property="Margin" Value="0,0,0,4" />
+                </Style>
+                <Style TargetType="{x:Type Label}" BasedOn="{StaticResource {x:Type Label}}">
+                    <Setter Property="Width" Value="100" />
+                    <Setter Property="VerticalAlignment" Value="Center" />
+                </Style>
+            </StackPanel.Resources>
+            <StackPanel>
+                <Label Content="Name"/>
+                <TextBox x:Name="NewWaName" Width="150" PreviewTextInput="WebAppName_Validation"/>
+            </StackPanel>
+            <StackPanel>
+                <Label Content="Port Number"   />
+                <TextBox x:Name="PortNumber" Width="150" PreviewTextInput="PortNumber_Validation" />
+            </StackPanel>
+            <Button Content="Next" Margin="100,16,0,0" HorizontalAlignment="Left" Height="26" Click="Nex_Button_Click" />
+        </StackPanel>
+      
     </Grid>
 </UserControl>
