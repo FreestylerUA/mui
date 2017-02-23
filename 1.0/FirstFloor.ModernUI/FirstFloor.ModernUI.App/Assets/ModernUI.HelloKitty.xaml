@@ -3,7 +3,7 @@
                     xmlns:mui="http://firstfloorsoftware.com/ModernUI">
 
     <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="/FirstFloor.ModernUI;component/Assets/ModernUI.Light.xaml" />
+        <ResourceDictionary Source="/Lanteria.DLL;component/Assets/ModernUI.Light.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
     <Color x:Key="AccentColor">#f472d0</Color>

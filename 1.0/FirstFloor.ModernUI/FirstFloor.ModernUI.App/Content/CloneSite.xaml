@@ -7,16 +7,17 @@
              xmlns:local="clr-namespace:FirstFloor.ModernUI.App.Content"
              xmlns:mui="http://firstfloorsoftware.com/ModernUI"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="300" d:DesignWidth="417.964">
     <Grid>
         <StackPanel HorizontalAlignment="Left" Margin="0,0,0,272">
             <StackPanel Orientation="Horizontal">
-                <Button x:Name="GetWebs" Content="Get Sites" Click="StartProcess"  />
-                <Button x:Name="Clone" Content="Clone Selected" Click="Clone_Click" Margin="8,0,0,0" Visibility="Hidden"/>
+                <Button x:Name="GetWebs" Content="Get Sites" Click="GetWebs_Click" Width="100"  />
+                <Button x:Name="Clone" Content="Clone Selected" Click="Clone_Click" Margin="8,0,0,0" Visibility="Hidden" Width="147"/>
+                <Button x:Name="BtnFileOpen" Content="Select WSP file" Click="BtnFileOpen_Click" Margin="8,0,0,0" Width="125" Visibility="Hidden"/>
             </StackPanel>
             <StackPanel HorizontalAlignment="Left" Margin="0,44,0,224" Width="464" >
                 <mui:ModernProgressRing x:Name="progressbar" IsActive="True" Width="80" Height="80" Visibility="Hidden" Margin="110,0" />
-            </StackPanel>
+                </StackPanel>
         </StackPanel>
         <StackPanel Margin="0,33,0,164">
             <DataGrid Name="DG1" AutoGenerateColumns="False" SelectionMode="Single" CanUserAddRows="False" CanUserDeleteRows="False" ScrollViewer.VerticalScrollBarVisibility="Auto" Visibility="Hidden" >

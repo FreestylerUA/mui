@@ -5,8 +5,8 @@
                     xmlns:nav="clr-namespace:FirstFloor.ModernUI.Windows.Navigation">
 
     <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="/FirstFloor.ModernUI;component/Assets/Converters.xaml" />
-        <ResourceDictionary Source="/FirstFloor.ModernUI;component/Assets/TextBlock.xaml" />
+        <ResourceDictionary Source="/Lanteria.DLL;component/Assets/Converters.xaml" />
+        <ResourceDictionary Source="/Lanteria.DLL;component/Assets/TextBlock.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
     <Style TargetType="controls:ModernFrame">

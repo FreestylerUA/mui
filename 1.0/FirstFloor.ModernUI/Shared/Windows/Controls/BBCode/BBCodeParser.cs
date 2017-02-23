@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Xml;
-using System.Globalization;
 using System.Windows.Documents;
 using System.Windows.Media;
 using System.Windows;

@@ -1,10 +1,6 @@
 ﻿using FirstFloor.ModernUI.App.Content;
 using FirstFloor.ModernUI.Windows;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FirstFloor.ModernUI.App
 {

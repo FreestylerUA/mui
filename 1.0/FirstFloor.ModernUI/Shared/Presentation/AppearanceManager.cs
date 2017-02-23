@@ -1,10 +1,6 @@
 ﻿using FirstFloor.ModernUI.Windows.Navigation;
 using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -20,11 +16,11 @@ namespace FirstFloor.ModernUI.Presentation
         /// <summary>
         /// The location of the dark theme resource dictionary.
         /// </summary>
-        public static readonly Uri DarkThemeSource = new Uri("/FirstFloor.ModernUI;component/Assets/ModernUI.Dark.xaml", UriKind.Relative);
+        public static readonly Uri DarkThemeSource = new Uri("/Lanteria.DLL;component/Assets/ModernUI.Dark.xaml", UriKind.Relative);
         /// <summary>
         /// The location of the light theme resource dictionary.
         /// </summary>
-        public static readonly Uri LightThemeSource = new Uri("/FirstFloor.ModernUI;component/Assets/ModernUI.Light.xaml", UriKind.Relative);
+        public static readonly Uri LightThemeSource = new Uri("/Lanteria.DLL;component/Assets/ModernUI.Light.xaml", UriKind.Relative);
 
         /// <summary>
         /// The resource key for the accent color.

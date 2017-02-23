@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Text;
-using System.Xml;
 
 namespace FirstFloor.ModernUI.Windows.Controls.BBCode
 {

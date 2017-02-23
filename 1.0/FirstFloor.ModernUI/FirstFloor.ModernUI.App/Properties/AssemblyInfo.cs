@@ -1,6 +1,4 @@
 ﻿using System.Reflection;
-using System.Resources;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Media;
@@ -8,12 +6,12 @@ using System.Windows.Media;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("ModernUI Demo App")]
-[assembly: AssemblyDescription("Demonstrating the features of Modern UI for WPF")]
+[assembly: AssemblyTitle("Lanteria App")]
+[assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("retail")]
-[assembly: AssemblyCompany("First Floor Software")]
-[assembly: AssemblyProduct("ModernUI demo")]
-[assembly: AssemblyCopyright("Copyright © First Floor Software 2013-2016")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("")]
+[assembly: AssemblyCopyright("")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -32,16 +30,16 @@ using System.Windows.Media;
 //[assembly: NeutralResourcesLanguage("en-US", UltimateResourceFallbackLocation.Satellite)]
 
 // required for PerMonitor DPI support to work
-[assembly:DisableDpiAwareness]
+[assembly: DisableDpiAwareness]
 
 
 [assembly: ThemeInfo(
     ResourceDictionaryLocation.None, //where theme specific resource dictionaries are located
-    //(used if a resource is not found in the page, 
-    // or application resource dictionaries)
+                                     //(used if a resource is not found in the page, 
+                                     // or application resource dictionaries)
     ResourceDictionaryLocation.SourceAssembly //where the generic resource dictionary is located
-    //(used if a resource is not found in the page, 
-    // app, or any theme specific resource dictionaries)
+                                              //(used if a resource is not found in the page, 
+                                              // app, or any theme specific resource dictionaries)
 )]
 
 

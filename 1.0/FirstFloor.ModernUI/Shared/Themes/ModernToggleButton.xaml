@@ -3,7 +3,7 @@
                     xmlns:controls="clr-namespace:FirstFloor.ModernUI.Windows.Controls">
 
     <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="/FirstFloor.ModernUI;component/Assets/Converters.xaml" />
+        <ResourceDictionary Source="/Lanteria.DLL;component/Assets/Converters.xaml" />
     </ResourceDictionary.MergedDictionaries>
     
     <Style TargetType="controls:ModernToggleButton">

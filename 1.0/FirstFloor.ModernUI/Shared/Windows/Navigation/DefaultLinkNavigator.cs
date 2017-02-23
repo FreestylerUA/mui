@@ -1,6 +1,4 @@
 ﻿using FirstFloor.ModernUI.Presentation;
-using FirstFloor.ModernUI.Windows.Controls;
-using FirstFloor.ModernUI.Windows.Media;
 using System;
 using System.Diagnostics;
 using System.Globalization;

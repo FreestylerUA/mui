@@ -1,10 +1,7 @@
 ﻿using FirstFloor.ModernUI.Presentation;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Media;
 
 namespace FirstFloor.ModernUI.App.Content
@@ -68,16 +65,16 @@ namespace FirstFloor.ModernUI.App.Content
         public SettingsAppearanceViewModel()
         {
             // add the default themes
-            this.themes.Add(new Link { DisplayName = "dark", Source = AppearanceManager.DarkThemeSource });
-            this.themes.Add(new Link { DisplayName = "light", Source = AppearanceManager.LightThemeSource });
+            themes.Add(new Link { DisplayName = "dark", Source = AppearanceManager.DarkThemeSource });
+            themes.Add(new Link { DisplayName = "light", Source = AppearanceManager.LightThemeSource });
 
             // add additional themes
-            this.themes.Add(new Link { DisplayName = "bing image", Source = new Uri("/ModernUIDemo;component/Assets/ModernUI.BingImage.xaml", UriKind.Relative) });
-            this.themes.Add(new Link { DisplayName = "hello kitty", Source = new Uri("/ModernUIDemo;component/Assets/ModernUI.HelloKitty.xaml", UriKind.Relative) });
-            this.themes.Add(new Link { DisplayName = "love", Source = new Uri("/ModernUIDemo;component/Assets/ModernUI.Love.xaml", UriKind.Relative) });
-            this.themes.Add(new Link { DisplayName = "snowflakes", Source = new Uri("/ModernUIDemo;component/Assets/ModernUI.Snowflakes.xaml", UriKind.Relative) });
+            themes.Add(new Link { DisplayName = "bing image", Source = new Uri("/ModernUIDemo;component/Assets/ModernUI.BingImage.xaml", UriKind.Relative) });
+            themes.Add(new Link { DisplayName = "hello kitty", Source = new Uri("/ModernUIDemo;component/Assets/ModernUI.HelloKitty.xaml", UriKind.Relative) });
+            themes.Add(new Link { DisplayName = "love", Source = new Uri("/ModernUIDemo;component/Assets/ModernUI.Love.xaml", UriKind.Relative) });
+            themes.Add(new Link { DisplayName = "snowflakes", Source = new Uri("/ModernUIDemo;component/Assets/ModernUI.Snowflakes.xaml", UriKind.Relative) });
 
-            this.SelectedFontSize = AppearanceManager.Current.FontSize == FontSize.Large ? FontLarge : FontSmall;
+            SelectedFontSize = AppearanceManager.Current.FontSize == FontSize.Large ? FontLarge : FontSmall;
             SyncThemeAndColor();
 
             AppearanceManager.Current.PropertyChanged += OnAppearanceManagerPropertyChanged;
@@ -86,10 +83,10 @@ namespace FirstFloor.ModernUI.App.Content
         private void SyncThemeAndColor()
         {
             // synchronizes the selected viewmodel theme with the actual theme used by the appearance manager.
-            this.SelectedTheme = this.themes.FirstOrDefault(l => l.Source.Equals(AppearanceManager.Current.ThemeSource));
+            SelectedTheme = themes.FirstOrDefault(l => l.Source.Equals(AppearanceManager.Current.ThemeSource));
 
             // and make sure accent color is up-to-date
-            this.SelectedAccentColor = AppearanceManager.Current.AccentColor;
+            SelectedAccentColor = AppearanceManager.Current.AccentColor;
         }
 
         private void OnAppearanceManagerPropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -101,7 +98,7 @@ namespace FirstFloor.ModernUI.App.Content
 
         public LinkCollection Themes
         {
-            get { return this.themes; }
+            get { return themes; }
         }
 
         public string[] FontSizes
@@ -116,30 +113,30 @@ namespace FirstFloor.ModernUI.App.Content
 
         public Color[] AccentColors
         {
-            get { return this.selectedPalette == PaletteMetro ? this.metroAccentColors : this.wpAccentColors; }
+            get { return selectedPalette == PaletteMetro ? metroAccentColors : wpAccentColors; }
         }
 
         public string SelectedPalette
         {
-            get { return this.selectedPalette; }
+            get { return selectedPalette; }
             set
             {
-                if (this.selectedPalette != value) {
-                    this.selectedPalette = value;
+                if (selectedPalette != value) {
+                    selectedPalette = value;
                     OnPropertyChanged("AccentColors");
 
-                    this.SelectedAccentColor = this.AccentColors.FirstOrDefault();
+                    SelectedAccentColor = AccentColors.FirstOrDefault();
                 }
             }
         }
 
         public Link SelectedTheme
         {
-            get { return this.selectedTheme; }
+            get { return selectedTheme; }
             set
             {
-                if (this.selectedTheme != value) {
-                    this.selectedTheme = value;
+                if (selectedTheme != value) {
+                    selectedTheme = value;
                     OnPropertyChanged("SelectedTheme");
 
                     // and update the actual theme
@@ -150,11 +147,11 @@ namespace FirstFloor.ModernUI.App.Content
 
         public string SelectedFontSize
         {
-            get { return this.selectedFontSize; }
+            get { return selectedFontSize; }
             set
             {
-                if (this.selectedFontSize != value) {
-                    this.selectedFontSize = value;
+                if (selectedFontSize != value) {
+                    selectedFontSize = value;
                     OnPropertyChanged("SelectedFontSize");
 
                     AppearanceManager.Current.FontSize = value == FontLarge ? FontSize.Large : FontSize.Small;
@@ -164,11 +161,11 @@ namespace FirstFloor.ModernUI.App.Content
 
         public Color SelectedAccentColor
         {
-            get { return this.selectedAccentColor; }
+            get { return selectedAccentColor; }
             set
             {
-                if (this.selectedAccentColor != value) {
-                    this.selectedAccentColor = value;
+                if (selectedAccentColor != value) {
+                    selectedAccentColor = value;
                     OnPropertyChanged("SelectedAccentColor");
 
                     AppearanceManager.Current.AccentColor = value;

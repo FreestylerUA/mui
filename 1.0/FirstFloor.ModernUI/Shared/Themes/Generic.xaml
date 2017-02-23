@@ -4,16 +4,16 @@
                     xmlns:shell="http://schemas.microsoft.com/winfx/2006/xaml/presentation/shell">
     
     <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="/FirstFloor.ModernUI;component/Themes/BBCodeBlock.xaml" />
-        <ResourceDictionary Source="/FirstFloor.ModernUI;component/Themes/ModernButton.xaml" />
-        <ResourceDictionary Source="/FirstFloor.ModernUI;component/Themes/ModernToggleButton.xaml" />
-        <ResourceDictionary Source="/FirstFloor.ModernUI;component/Themes/ModernDialog.xaml" />
-        <ResourceDictionary Source="/FirstFloor.ModernUI;component/Themes/ModernFrame.xaml" />
-        <ResourceDictionary Source="/FirstFloor.ModernUI;component/Themes/ModernMenu.xaml" />
-        <ResourceDictionary Source="/FirstFloor.ModernUI;component/Themes/ModernProgressRing.xaml" />
-        <ResourceDictionary Source="/FirstFloor.ModernUI;component/Themes/ModernTab.xaml" />
-        <ResourceDictionary Source="/FirstFloor.ModernUI;component/Themes/ModernWindow.xaml" />
-        <ResourceDictionary Source="/FirstFloor.ModernUI;component/Themes/TransitioningContentControl.xaml" />
+        <ResourceDictionary Source="/Lanteria.DLL;component/Themes/BBCodeBlock.xaml" />
+        <ResourceDictionary Source="/Lanteria.DLL;component/Themes/ModernButton.xaml" />
+        <ResourceDictionary Source="/Lanteria.DLL;component/Themes/ModernToggleButton.xaml" />
+        <ResourceDictionary Source="/Lanteria.DLL;component/Themes/ModernDialog.xaml" />
+        <ResourceDictionary Source="/Lanteria.DLL;component/Themes/ModernFrame.xaml" />
+        <ResourceDictionary Source="/Lanteria.DLL;component/Themes/ModernMenu.xaml" />
+        <ResourceDictionary Source="/Lanteria.DLL;component/Themes/ModernProgressRing.xaml" />
+        <ResourceDictionary Source="/Lanteria.DLL;component/Themes/ModernTab.xaml" />
+        <ResourceDictionary Source="/Lanteria.DLL;component/Themes/ModernWindow.xaml" />
+        <ResourceDictionary Source="/Lanteria.DLL;component/Themes/TransitioningContentControl.xaml" />
     </ResourceDictionary.MergedDictionaries>
  
 </ResourceDictionary>

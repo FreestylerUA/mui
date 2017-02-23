@@ -3,11 +3,11 @@
 namespace FirstFloor.ModernUI.App.Pages
 {
     /// <summary>
-    /// Interaction logic for LayoutList.xaml
+    /// Interaction logic for ControlsStyles.xaml
     /// </summary>
-    public partial class LayoutList : UserControl
+    public partial class ControlsStyles : UserControl
     {
-        public LayoutList()
+        public ControlsStyles()
         {
             InitializeComponent();
         }
