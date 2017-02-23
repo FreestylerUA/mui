@@ -12,7 +12,6 @@ using System.Text.RegularExpressions;
 using System.Net.NetworkInformation;
 using System.Net;
 using System.Windows.Forms;
-using MB = System.Windows.MessageBox;
 using FirstFloor.ModernUI.Windows.Controls;
 
 namespace FirstFloor.ModernUI.App.Content
@@ -271,7 +270,7 @@ namespace FirstFloor.ModernUI.App.Content
                     //activate feature
                     LogMessage("\nActivating features");
                     LogMessage(SP.ActivateCoreFeatures("lanteria.effectivestaff.wsp", newURL.AbsoluteUri));
-  
+                    LogMessage("\nClone process ended.");
 
                 }
                 catch (Exception ex)

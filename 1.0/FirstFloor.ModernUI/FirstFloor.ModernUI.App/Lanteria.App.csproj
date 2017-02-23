@@ -69,6 +69,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
@@ -106,6 +107,9 @@
     </Compile>
     <Compile Include="Content\LoremIpsumSplit.xaml.cs">
       <DependentUpon>LoremIpsumSplit.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Content\UpdateCoreSolution.xaml.cs">
+      <DependentUpon>UpdateCoreSolution.xaml</DependentUpon>
     </Compile>
     <Compile Include="LoremIpsumLoader.cs" />
     <Compile Include="Pages\DpiAwarenessViewModel.cs" />
@@ -230,18 +234,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <Page Include="Assets\ModernUI.Snowflakes.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Assets\ModernUI.Love.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Assets\ModernUI.HelloKitty.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Content\CloneSite.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -259,6 +251,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Content\LoremIpsumSplit.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Content\UpdateCoreSolution.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
