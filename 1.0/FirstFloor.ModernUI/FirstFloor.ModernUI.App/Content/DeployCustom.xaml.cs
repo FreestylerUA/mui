@@ -7,6 +7,8 @@ using System.ComponentModel;
 using System.Globalization;
 using System.Windows.Forms;
 using FirstFloor.ModernUI.Windows.Controls;
+using System.Text.RegularExpressions;
+using System.Linq;
 
 namespace FirstFloor.ModernUI.App.Content
 {
@@ -109,8 +111,12 @@ namespace FirstFloor.ModernUI.App.Content
                         item.IsSelected = false;
                     }
                 }
-                DG1.Items.Refresh();
-                BtnFileOpen.Visibility = Visibility.Visible;
+                if (DG1.CancelEdit())
+                {
+                    DG1.Items.Refresh();
+                    BtnFileOpen.Visibility = Visibility.Visible;
+                }
+
 
             }
             else
@@ -136,23 +142,45 @@ namespace FirstFloor.ModernUI.App.Content
                     Log.Visibility = Visibility.Visible;
                     LogMessage("\nWeb Application selected: " + webURL);
                     LogMessage("\nCustom solution selected: " + filename);
-                    LogMessage("\n" + SP.AddSolution(filename));
-                    if (SP.SolutionDeployed(solution))
+                    try
                     {
-                        LogMessage("\nCustom solution " + solution + " is already deployed!\n" + SP.SoltionDeploymentStatus(solution));
-                        break;
+                        SPFarm.Local.Solutions.Add(filename);
                     }
-                    else
+                    catch (Exception ex)
                     {
-                        MessageBoxResult alert = ModernDialog.ShowMessage("Deploy solution " + solution + " on selected Web Application?", "Custom solution deployment", MessageBoxButton.YesNo);
-                        if (alert == MessageBoxResult.Yes)
+                        ModernDialog.ShowMessage(ex.Message, "Error", MessageBoxButton.OK);
+                        string findGuid = ex.Message;
+                        MatchCollection guids = Regex.Matches(findGuid, @"(\{){0,1}[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}(\}){0,1}");
+                        for (int i = 0; i < guids.Count; i++)
                         {
-                            CustomSolutionDeploy();
-                            break;
+                            string Match = guids[i].Value;
+                            SPSolution sol = SP.GetSolution(Match);
+                            if (!sol.Deployed)
+                            {
+                                MessageBoxResult rmsol = ModernDialog.ShowMessage("Solution "+ sol.Name+" is not deployed.\nRemove?", "", MessageBoxButton.YesNo);
+                                if (rmsol == MessageBoxResult.Yes)
+                                {
+                                    SPFarm.Local.Solutions.Remove(sol.Id);
+                                }
+                                else
+                                {
+                                    break;
+                                }
+                            }
+                            else
+                            {
+                                SPWebApplication wa = sol.DeployedWebApplications.FirstOrDefault();
+                            }
                         }
-                        break;
                     }
-                   
+                    LogMessage("\n" + SP.AddSolution(filename));
+                    MessageBoxResult alert = ModernDialog.ShowMessage("Deploy solution " + solution + " on selected Web Application?", "Custom solution deployment", MessageBoxButton.YesNo);
+                    if (alert == MessageBoxResult.Yes)
+                     {
+                         CustomSolutionDeploy();
+                           
+                     }
+                    break;
                 case DialogResult.Cancel:
                 default:
                     filename = null;
@@ -164,20 +192,38 @@ namespace FirstFloor.ModernUI.App.Content
 
         private void CustomSolutionDeploy()
         {
-            Collection<SPWebApplication> selectedWebApps = new Collection<SPWebApplication>();
-            SPWebApplication webApplication = SPWebApplication.Lookup(new Uri(webURL));
-            selectedWebApps.Add(webApplication);
-            if (!SP.DeploySolution(solution, selectedWebApps))
+            BackgroundWorker deploy_custom = new BackgroundWorker();
+            deploy_custom.DoWork += (o, ea) =>
             {
-                LogMessage("\nDeployment error: " + SP.SoltionDeploymentStatus(solution));
-            }
-            else
+                Dispatcher.Invoke(() =>
+                {
+                    GetWebs.Visibility = Visibility.Hidden;
+                    BtnFileOpen.Visibility = Visibility.Hidden;
+                    progressbar.Visibility = Visibility.Visible;
+                });
+                Collection<SPWebApplication> selectedWebApps = new Collection<SPWebApplication>();
+                SPWebApplication webApplication = SPWebApplication.Lookup(new Uri(webURL));
+                selectedWebApps.Add(webApplication);
+                if (!SP.DeploySolution(solution, selectedWebApps))
+                {
+                    LogMessage("\nDeployment error: " + SP.SoltionDeploymentStatus(solution));
+                }
+                else
+                {
+                    LogMessage("\nCustom solution is deployed.");
+                    LogMessage("\nActivating features...");
+                    LogMessage(SP.ActivateFeaturesFromCustomSolution(solution, webURL));
+                 }
+            };
+            deploy_custom.RunWorkerCompleted += (o, ea) =>
             {
-                LogMessage("\nCustom solution is deployed.");
-                LogMessage("\nActivating features...");
-                LogMessage(SP.ActivateFeaturesFromCustomSolution(solution, webURL));
-             }
-                
+                Dispatcher.Invoke(() =>
+                {
+                    progressbar.Visibility = Visibility.Hidden;
+                    GetWebs.Visibility = Visibility.Visible;
+                });
+            };
+            deploy_custom.RunWorkerAsync();
         }
     }
 }

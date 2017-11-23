@@ -7,6 +7,7 @@ using System.Threading;
 using System.Linq;
 using System.Text;
 using Microsoft.SharePoint.Administration.Claims;
+using FirstFloor.ModernUI.App.Properties;
 
 namespace FirstFloor.ModernUI.App
 {
@@ -17,6 +18,19 @@ namespace FirstFloor.ModernUI.App
             get; set;
         }
         public SPFarm farm = SPFarm.Local;
+        public List<SPWebApplication> GetWebsFromSolution(string sName)
+        {
+            List<SPWebApplication> AllWebs = new List<SPWebApplication>();
+            SPSolution solution = farm.Solutions[sName];
+            SPSecurity.RunWithElevatedPrivileges(delegate ()
+            {
+                foreach (SPWebApplication webApplication in solution.DeployedWebApplications)
+                {
+                    AllWebs.Add(webApplication);
+                }
+            });
+            return AllWebs;
+        }
         public List<SPWebApplication> GetAllWebs()
         {
             List<SPWebApplication> AllWebs = new List<SPWebApplication>();
@@ -76,10 +90,28 @@ namespace FirstFloor.ModernUI.App
             });
             return AllSites;
         }
+        public SPSolution GetCoreSolution()
+        {
+            SPSolution solution = farm.Solutions[Settings.Default.CoreSolution];
+            if (solution == null)
+            {
+                solution = farm.Solutions[Settings.Default.SolutionID];
+            }
+            return solution;
+        }
+        public SPSolution GetSolution(string sName)
+        {
+            SPSolution solution = farm.Solutions[sName];
+            if (solution == null)
+            {
+                solution = farm.Solutions[new Guid(sName)];
+            }
+            return solution;
+        }
         public bool DeploySolution(string sName, Collection<SPWebApplication> WebApps)
         {
             SPSolution solution = farm.Solutions[sName];
-            solution.Deploy(DateTime.Now, true, WebApps, false);
+            solution.Deploy(DateTime.Now, true, WebApps, true);
             bool deployed = solution.Deployed;
             while (!deployed)
             {
@@ -94,6 +126,21 @@ namespace FirstFloor.ModernUI.App
                 jobexists = solution.JobExists;
             }
             return solution.Deployed;
+        }
+        public string RetractCoreSolution ()
+        {
+            StringBuilder log = new StringBuilder();
+            SPSolution solution = GetCoreSolution();
+            if (solution != null)
+            {
+                if (solution.DeployedWebApplications.Count > 0)
+                {
+                    solution.RetractLocal(solution.DeployedWebApplications);
+                }
+                SPFarm.Local.Solutions.Remove(solution.Id);
+                log.Append("Solution has been removed, please select new WSP file.");
+            }
+            return log.ToString();
         }
         public string SoltionDeploymentStatus(string sName)
         {
@@ -122,7 +169,7 @@ namespace FirstFloor.ModernUI.App
             try
             {
                 SPSolution solution = farm.Solutions.Add(path);
-                return "Solution " + solution.Name + " added";
+                return "Solution " + solution.Name + " added"+"\nSelect web applications and click Deploy.";
             }
             catch (Exception ex)
             {
@@ -211,14 +258,70 @@ namespace FirstFloor.ModernUI.App
             }
             return log.ToString();
         }
-        public string ActivateCoreFeatures(string sName, string webURL)
+        public string ActivateCoreFeatures(string webURL)
         {
             StringBuilder log = new StringBuilder();
             SPFeatureDefinitionCollection collFeatureDefinitions = SPFarm.Local.FeatureDefinitions;
-            SPFeatureDefinition siteFeature = collFeatureDefinitions.SingleOrDefault(sf => sf.DisplayName.Equals("Lanteria.ES.SharePoint_LanteriaSite"));
-            SPFeatureDefinition webFeature = collFeatureDefinitions.SingleOrDefault(sf => sf.DisplayName.Equals("Lanteria.ES.SharePoint_LanteriaWeb"));
-            SPFeatureDefinition sqlFeature = collFeatureDefinitions.SingleOrDefault(sf => sf.DisplayName.Equals("Lanteria.ES.SharePoint_lanteriaSQL"));
-            SPFeatureDefinition contentFeature = collFeatureDefinitions.SingleOrDefault(sf => sf.DisplayName.Equals("Lanteria.ES.SharePoint_LanteriaContent"));
+            SPFeatureDefinition siteFeature = collFeatureDefinitions.SingleOrDefault(sf => sf.DisplayName.Equals(Settings.Default.SiteFeature));
+            SPFeatureDefinition webFeature = collFeatureDefinitions.SingleOrDefault(sf => sf.DisplayName.Equals(Settings.Default.WebFeature));
+            SPFeatureDefinition sqlFeature = collFeatureDefinitions.SingleOrDefault(sf => sf.DisplayName.Equals(Settings.Default.SqlFeature));
+            SPFeatureDefinition contentFeature = collFeatureDefinitions.SingleOrDefault(sf => sf.DisplayName.Equals(Settings.Default.ContentFeature));
+            //feature activation
+            log.Append("\nActivating Lanteria core features...");
+            using (SPSite siteCollection = new SPSite(webURL))
+            {
+                try
+                {
+                    siteCollection.Features.Add(siteFeature.Id);
+                    log.Append("\nFeature Lanteria.ES.SharePoint_LanteriaSite activated");
+                }
+                catch (Exception ex)
+                {
+                    log.Append("\nError occured during site feature activation: " + ex.Message);
+                }
+
+            }
+            using (SPSite siteCollection = new SPSite(webURL + "es/"))
+            {
+                SPWeb newWeb = siteCollection.OpenWeb();
+                try
+                {
+                    newWeb.Features.Add(sqlFeature.Id);
+                    log.Append("\nFeature Lanteria.ES.SharePoint_LanteriaSQL activated");
+                }
+                catch (Exception ex)
+                {
+                    log.Append("\nError occured during feature activation: " + ex.Message);
+                }
+                try
+                {
+                    newWeb.Features.Add(webFeature.Id);
+                    log.Append("\nFeature Lanteria.ES.SharePoint_LanteriaWeb activated");
+                }
+                catch (Exception ex)
+                {
+                    log.Append("\nError occured during feature activation: " + ex.Message);
+                }
+                try
+                {
+                    newWeb.Features.Add(contentFeature.Id);
+                    log.Append("\nFeature Lanteria.ES.SharePoint_LanteriaContent activated");
+                }
+                catch (Exception ex)
+                {
+                    log.Append("\nError occured during feature activation: " + ex.Message);
+                }
+            }
+            return log.ToString();
+        }
+        public string DeActivateCoreFeatures(string webURL)
+        {
+            StringBuilder log = new StringBuilder();
+            SPFeatureDefinitionCollection collFeatureDefinitions = SPFarm.Local.FeatureDefinitions;
+            SPFeatureDefinition siteFeature = collFeatureDefinitions.SingleOrDefault(sf => sf.DisplayName.Equals(Settings.Default.SiteFeature));
+            SPFeatureDefinition webFeature = collFeatureDefinitions.SingleOrDefault(sf => sf.DisplayName.Equals(Settings.Default.WebFeature));
+            SPFeatureDefinition sqlFeature = collFeatureDefinitions.SingleOrDefault(sf => sf.DisplayName.Equals(Settings.Default.SqlFeature));
+            SPFeatureDefinition contentFeature = collFeatureDefinitions.SingleOrDefault(sf => sf.DisplayName.Equals(Settings.Default.ContentFeature));
             //disable features first
             log.Append("\nDisabling features...");
             using (SPSite siteCollection = new SPSite(webURL + "es/"))
@@ -270,53 +373,19 @@ namespace FirstFloor.ModernUI.App
                     log.Append("Error occured during feature deactivation: " + ex.Message);
                 }
             }
-            //feature activation
-            log.Append("\nActivating Lanteria core features...");
-            using (SPSite siteCollection = new SPSite(webURL))
-            {
-                try
-                {
-                    siteCollection.Features.Add(siteFeature.Id);
-                    log.Append("\nFeature Lanteria.ES.SharePoint_LanteriaSite activated");
-                }
-                catch (Exception ex)
-                {
-                    log.Append("\nError occured during site feature activation: " + ex.Message);
-                }
-
-            }
-            using (SPSite siteCollection = new SPSite(webURL + "es/"))
-            {
-                SPWeb newWeb = siteCollection.OpenWeb();
-                try
-                {
-                    newWeb.Features.Add(sqlFeature.Id);
-                    log.Append("\nFeature Lanteria.ES.SharePoint_LanteriaSQL activated");
-                }
-                catch (Exception ex)
-                {
-                    log.Append("\nError occured during feature activation: " + ex.Message);
-                }
-                try
-                {
-                    newWeb.Features.Add(webFeature.Id);
-                    log.Append("\nFeature Lanteria.ES.SharePoint_LanteriaWeb activated");
-                }
-                catch (Exception ex)
-                {
-                    log.Append("\nError occured during feature activation: " + ex.Message);
-                }
-                try
-                {
-                    newWeb.Features.Add(contentFeature.Id);
-                    log.Append("\nFeature Lanteria.ES.SharePoint_LanteriaContent activated");
-                }
-                catch (Exception ex)
-                {
-                    log.Append("\nError occured during feature activation: " + ex.Message);
-                }
-            }
             return log.ToString();
+        }
+        public bool IsSolutionDeployedToWeb(string sName, SPWebApplication web)
+        {
+            SPSolution solution = farm.Solutions[sName];
+            if (solution != null && solution.DeployedWebApplications.Contains(web))
+                {
+                    return true;
+                }
+            else
+            {
+                return false;
+            }
         }
     }
 

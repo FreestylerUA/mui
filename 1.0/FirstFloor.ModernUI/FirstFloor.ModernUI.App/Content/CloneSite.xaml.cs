@@ -137,8 +137,11 @@ namespace FirstFloor.ModernUI.App.Content
                         item.IsSelected = false;
                     }
                 }
-                DG1.Items.Refresh();
-                Clone.Visibility = Visibility.Visible;
+                if (DG1.CancelEdit())
+                {
+                    DG1.Items.Refresh();
+                    Clone.Visibility = Visibility.Visible;
+                }
             }
             else
             {
@@ -222,6 +225,9 @@ namespace FirstFloor.ModernUI.App.Content
                         webAppBuilder.RootDirectory = new System.IO.DirectoryInfo("C:\\Inetpub\\wwwroot\\wss\\VirtualDirectories\\" + WaName.Replace(" ", string.Empty) + "_" + Port.ToString());
                         webAppBuilder.UseNTLMExclusively = true;
                         SPWebApplication newWebApp = webAppBuilder.Create();
+                        newWebApp.UseClaimsAuthentication = true;
+                        newWebApp.GrantAccessToProcessIdentity(username);
+                        newWebApp.Update();
                         newWebApp.Provision();
                         newURL = newWebApp.GetResponseUri(SPUrlZone.Default);
                         LogMessage("\nNew Web Application created.");
@@ -229,9 +235,6 @@ namespace FirstFloor.ModernUI.App.Content
                     });
                         //restore site collection
                         SPWebApplication webApplication = SPWebApplication.Lookup(new Uri(newURL.AbsoluteUri));
-                        webApplication.UseClaimsAuthentication = true;
-                        webApplication.GrantAccessToProcessIdentity(username);
-                        webApplication.Update();
                         SPSiteCollection sitecols = webApplication.Sites;
                         sitecols.Restore("/", "C:\\Windows\\Temp\\spsite_backup.cmp", true);
                         LogMessage("\nSite collection restored to URL: " + newURL.AbsoluteUri);
@@ -268,8 +271,9 @@ namespace FirstFloor.ModernUI.App.Content
                         }
 
                     //activate feature
-                    LogMessage("\nActivating features");
-                    LogMessage(SP.ActivateCoreFeatures("lanteria.effectivestaff.wsp", newURL.AbsoluteUri));
+                    
+                    LogMessage(SP.DeActivateCoreFeatures(newURL.AbsoluteUri));
+                    LogMessage(SP.ActivateCoreFeatures(newURL.AbsoluteUri));
                     LogMessage("\nClone process ended.");
 
                 }

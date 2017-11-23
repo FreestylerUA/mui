@@ -1,13 +1,46 @@
 ﻿<UserControl x:Class="FirstFloor.ModernUI.App.Content.UpdateCoreSolution"
-      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:FirstFloor.ModernUI.App.Content"
-      mc:Ignorable="d" 
-      d:DesignHeight="300" d:DesignWidth="300">
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:core="clr-namespace:System;assembly=mscorlib"
+             xmlns:local="clr-namespace:FirstFloor.ModernUI.App.Content"
+             xmlns:mui="http://firstfloorsoftware.com/ModernUI"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="417.964">
 
     <Grid>
-        
+        <StackPanel HorizontalAlignment="Left" Margin="0,0,0,272">
+            <StackPanel Orientation="Horizontal">
+                <Button x:Name="GetWebs" Content="1.Get Web Apps" Click="GetWebs_Click"  Width="auto" />
+                <Button x:Name="BtnRetract" Content="2.Retract/Remove"  Margin="5,0,0,0" Width="auto" Visibility="Visible" Click="BtnRetract_Click"/>
+                <Button x:Name="BtnFileOpen" Content="3.Select WSP" Click="BtnFileOpen_Click" Margin="5,0,0,0" Width="auto" Visibility="Visible"/>
+                <Button x:Name="BtnDeploy" Content="4.Deploy" Margin="5,0,0,0" Width="auto" Visibility="Visible" Click="BtnDeploy_Click"/>
+            </StackPanel>
+            <StackPanel HorizontalAlignment="Left" Margin="0,44,0,224" Width="464" >
+                <mui:ModernProgressRing x:Name="progressbar" IsActive="True" Width="80" Height="80" Visibility="Hidden" Margin="110,0" />
+            </StackPanel>
+        </StackPanel>
+        <StackPanel Margin="0,33,0,164">
+            <DataGrid Name="DG1" AutoGenerateColumns="False" SelectionMode="Single" CanUserResizeRows="False" IsReadOnly="True" CanUserAddRows="False" CanUserDeleteRows="False" ScrollViewer.VerticalScrollBarVisibility="Auto" Visibility="Hidden" >
+                <DataGrid.Columns>
+                    <DataGridTemplateColumn Header="">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <CheckBox IsChecked="{Binding IsSelected, UpdateSourceTrigger=PropertyChanged}" Click="CheckBox_Click" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <mui:DataGridTextColumn Header="Name" Binding="{Binding Title}" IsReadOnly="True" Width="*" />
+                    <mui:DataGridTextColumn Header="Url" Binding="{Binding Url}" IsReadOnly="True" Width="*"/>
+                    <mui:DataGridTextColumn Header="Deployed" Binding="{Binding IsDeployed}" IsReadOnly="True" Width="*"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </StackPanel>
+        <StackPanel x:Name="Log" Margin="0,332,0,-43" Visibility="Hidden">
+            <TextBlock Text="Events" FontWeight="Bold" Margin="0,0,0,8" />
+            <TextBox x:Name="TextEvents" Width="423" Height="193" HorizontalAlignment="Left" IsReadOnly="True" HorizontalScrollBarVisibility="Auto"  VerticalScrollBarVisibility="Auto" />
+        </StackPanel>
+
     </Grid>
 </UserControl>

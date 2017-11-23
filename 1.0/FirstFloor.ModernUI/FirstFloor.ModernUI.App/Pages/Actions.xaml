@@ -10,9 +10,9 @@
         <mui:ModernTab SelectedSource="/Content/CloneSite.xaml" Layout="List">
             <mui:ModernTab.Links>
 
-                <mui:Link DisplayName="Clone" Source="/Content/CloneSite.xaml" />
+                <mui:Link DisplayName="Clone SPSite" Source="/Content/CloneSite.xaml" />
                 <mui:Link DisplayName="Deploy Custom Solution" Source="/Content/DeployCustom.xaml" />
-                <mui:Link DisplayName="Update Solution" Source="/Content/UpdateCoreSolution.xaml" />
+                <mui:Link DisplayName="Update Core Solution" Source="/Content/UpdateCoreSolution.xaml" />
             </mui:ModernTab.Links>
         </mui:ModernTab>
     </Grid>

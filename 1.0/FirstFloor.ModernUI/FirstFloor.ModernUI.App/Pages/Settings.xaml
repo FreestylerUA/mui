@@ -10,6 +10,7 @@
         <mui:ModernTab SelectedSource="/Content/SettingsAppearance.xaml" Layout="List">
             <mui:ModernTab.Links>
                 <mui:Link DisplayName="Appearance" Source="/Content/SettingsAppearance.xaml" />
+                <mui:Link DisplayName="Lanteria Specific" Source="/Content/LanteriaSettings.xaml" />
             </mui:ModernTab.Links>
         </mui:ModernTab>
     </Grid>

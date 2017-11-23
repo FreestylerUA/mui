@@ -19,7 +19,7 @@
             </StackPanel>
         </StackPanel>
         <StackPanel Margin="0,33,0,164">
-            <DataGrid Name="DG1" AutoGenerateColumns="False" SelectionMode="Single" CanUserAddRows="False" CanUserDeleteRows="False" ScrollViewer.VerticalScrollBarVisibility="Auto" Visibility="Hidden" >
+            <DataGrid Name="DG1" AutoGenerateColumns="False" SelectionMode="Single" CanUserResizeRows="False" IsReadOnly="True" CanUserAddRows="False" CanUserDeleteRows="False" ScrollViewer.VerticalScrollBarVisibility="Auto" Visibility="Hidden" >
                 <DataGrid.Columns>
                     <DataGridTemplateColumn Header="">
                         <DataGridTemplateColumn.CellTemplate>

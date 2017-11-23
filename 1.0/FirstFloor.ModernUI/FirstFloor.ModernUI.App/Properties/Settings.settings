@@ -1,7 +1,30 @@
 ﻿<?xml version='1.0' encoding='utf-8'?>
-<SettingsFile xmlns="uri:settings" CurrentProfile="(Default)">
-  <Profiles>
-    <Profile Name="(Default)" />
-  </Profiles>
-  <Settings />
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="FirstFloor.ModernUI.App.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="CoreSolution" Type="System.String" Scope="User">
+      <Value Profile="(Default)">lanteria.effectivestaff.wsp</Value>
+    </Setting>
+    <Setting Name="SiteFeature" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Lanteria.ES.SharePoint_LanteriaSite</Value>
+    </Setting>
+    <Setting Name="WebFeature" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Lanteria.ES.SharePoint_LanteriaWeb</Value>
+    </Setting>
+    <Setting Name="ContentFeature" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Lanteria.ES.SharePoint_LanteriaContent</Value>
+    </Setting>
+    <Setting Name="SqlFeature" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Lanteria.ES.SharePoint_lanteriaSQL</Value>
+    </Setting>
+    <Setting Name="ADFeature" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Lanteria.ES.SharePoint_LanteriaADIntergation</Value>
+    </Setting>
+    <Setting Name="UPFeature" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Lanteria.ES.SharePoint_LanteriaUserProfileIntegration</Value>
+    </Setting>
+    <Setting Name="SolutionID" Type="System.Guid" Scope="User">
+      <Value Profile="(Default)">a5fd7f06-6bbc-4f25-9192-cff892ce5e9b</Value>
+    </Setting>
+  </Settings>
 </SettingsFile>
