@@ -36,7 +36,7 @@
         </StackPanel>
         <StackPanel x:Name="Log" Margin="0,222,0,0" Visibility="Hidden">
             <TextBlock Text="Events" FontWeight="Bold" Margin="0,0,0,8" />
-            <TextBox x:Name="TextEvents" Width="480" Height="200" HorizontalAlignment="Left" IsReadOnly="True" HorizontalScrollBarVisibility="Auto"  VerticalScrollBarVisibility="Auto" />
+            <TextBox x:Name="TextEvents" Width="480" Height="200" HorizontalAlignment="Stretch" IsReadOnly="True" HorizontalScrollBarVisibility="Auto"  VerticalScrollBarVisibility="Auto" />
         </StackPanel>
         <StackPanel x:Name="CreateWebApp" Margin="0,33,0,203" Visibility="Hidden">
             <TextBlock Text="Create new Web Application" Style="{StaticResource Heading2}" Margin="0,0,0,8" />

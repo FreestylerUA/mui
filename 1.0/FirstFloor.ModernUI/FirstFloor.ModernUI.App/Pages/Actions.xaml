@@ -7,12 +7,12 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid Style="{StaticResource ContentRoot}">
-        <mui:ModernTab SelectedSource="/Content/CloneSite.xaml" Layout="List">
+        <mui:ModernTab SelectedSource="/Content/UpdateCoreSolution.xaml" Layout="List">
             <mui:ModernTab.Links>
-
-                <mui:Link DisplayName="Clone SPSite" Source="/Content/CloneSite.xaml" />
-                <mui:Link DisplayName="Deploy Custom Solution" Source="/Content/DeployCustom.xaml" />
                 <mui:Link DisplayName="Update Core Solution" Source="/Content/UpdateCoreSolution.xaml" />
+                <mui:Link DisplayName="Deploy Custom Solution" Source="/Content/DeployCustom.xaml" />
+                <mui:Link DisplayName="Clone SPSite" Source="/Content/CloneSite.xaml" />
+       
             </mui:ModernTab.Links>
         </mui:ModernTab>
     </Grid>

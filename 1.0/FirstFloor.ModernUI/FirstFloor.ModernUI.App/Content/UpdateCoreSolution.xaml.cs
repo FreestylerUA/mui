@@ -145,17 +145,18 @@ namespace FirstFloor.ModernUI.App.Content
             worker.DoWork += (o, ea) =>
             {
                 //deactivate features
-                var WebApps = SP.GetAllWebs();
-                foreach (SPWebApplication web in WebApps)
+                var WebApps = SP.GetWebsFromSolution(Settings.Default.CoreSolution);
+                if (WebApps.Any())
                 {
-                    LogMessage("\nDisabling features...");
-                    LogMessage(SP.DeActivateCoreFeatures(web.GetResponseUri(SPUrlZone.Default).AbsoluteUri));
+                    foreach (SPWebApplication web in WebApps)
+                    {
+                        LogMessage(SP.DeActivateCoreFeatures(web.GetResponseUri(SPUrlZone.Default).AbsoluteUri));
+                    }
+                    //do solution retract
+                    LogMessage("\n" + SP.RetractCoreSolution());
+                    selectedWebApps.Clear();
                 }
-                //do solution retract
-                LogMessage("\n" + SP.RetractCoreSolution());
-                selectedWebApps.Clear();
-
-
+                else { LogMessage("\nSolution is not deployed to any Web Application!\nBut you can deploy it using buttons 3 and 4."); }
             };
             worker.RunWorkerCompleted += (o, ea) =>
             {
@@ -240,6 +241,7 @@ namespace FirstFloor.ModernUI.App.Content
             worker.DoWork += (o, ea) =>
             {
                 solution = SP.GetCoreSolution().Name;
+                LogMessage("\nDeploying...");
                 if (!SP.DeploySolution(solution, selectedWebApps))
                 {
                     LogMessage("\nDeployment error: " + SP.SoltionDeploymentStatus(solution));
@@ -247,12 +249,12 @@ namespace FirstFloor.ModernUI.App.Content
                 else
                 {
                     LogMessage("\nCore solution is deployed.");
-                    LogMessage("\nActivating features...");
                     foreach (SPWebApplication web in SP.GetCoreSolution().DeployedWebApplications)
                     {
                         LogMessage(SP.ActivateCoreFeatures(web.GetResponseUri(SPUrlZone.Default).AbsoluteUri));
                     }
-                    
+                    LogMessage("\nOperation completed successfully!");
+
                 }
             };
             worker.RunWorkerCompleted += (o, ea) =>

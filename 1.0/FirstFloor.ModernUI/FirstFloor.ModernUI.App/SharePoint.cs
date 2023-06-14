@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.SharePoint.Administration.Claims;
 using FirstFloor.ModernUI.App.Properties;
+using System.Linq.Expressions;
 
 namespace FirstFloor.ModernUI.App
 {
@@ -22,13 +23,16 @@ namespace FirstFloor.ModernUI.App
         {
             List<SPWebApplication> AllWebs = new List<SPWebApplication>();
             SPSolution solution = farm.Solutions[sName];
-            SPSecurity.RunWithElevatedPrivileges(delegate ()
+            if (solution != null)
             {
-                foreach (SPWebApplication webApplication in solution.DeployedWebApplications)
+                SPSecurity.RunWithElevatedPrivileges(delegate ()
                 {
-                    AllWebs.Add(webApplication);
-                }
-            });
+                    foreach (SPWebApplication webApplication in solution.DeployedWebApplications)
+                    {
+                        AllWebs.Add(webApplication);
+                    }
+                });
+            }
             return AllWebs;
         }
         public List<SPWebApplication> GetAllWebs()
@@ -138,7 +142,11 @@ namespace FirstFloor.ModernUI.App
                     solution.RetractLocal(solution.DeployedWebApplications);
                 }
                 SPFarm.Local.Solutions.Remove(solution.Id);
-                log.Append("Solution has been removed, please select new WSP file.");
+                log.Append("Solution has been removed, please select new WSP file to deploy.");
+            }
+            else
+            {
+                log.Append("Solution already removed, please select new WSP file to deploy.");
             }
             return log.ToString();
         }
@@ -264,10 +272,9 @@ namespace FirstFloor.ModernUI.App
             SPFeatureDefinitionCollection collFeatureDefinitions = SPFarm.Local.FeatureDefinitions;
             SPFeatureDefinition siteFeature = collFeatureDefinitions.SingleOrDefault(sf => sf.DisplayName.Equals(Settings.Default.SiteFeature));
             SPFeatureDefinition webFeature = collFeatureDefinitions.SingleOrDefault(sf => sf.DisplayName.Equals(Settings.Default.WebFeature));
-            SPFeatureDefinition sqlFeature = collFeatureDefinitions.SingleOrDefault(sf => sf.DisplayName.Equals(Settings.Default.SqlFeature));
             SPFeatureDefinition contentFeature = collFeatureDefinitions.SingleOrDefault(sf => sf.DisplayName.Equals(Settings.Default.ContentFeature));
             //feature activation
-            log.Append("\nActivating Lanteria core features...");
+            log.Append("\nActivating Lanteria core features at " + webURL);
             using (SPSite siteCollection = new SPSite(webURL))
             {
                 try
@@ -284,15 +291,6 @@ namespace FirstFloor.ModernUI.App
             using (SPSite siteCollection = new SPSite(webURL + "es/"))
             {
                 SPWeb newWeb = siteCollection.OpenWeb();
-                try
-                {
-                    newWeb.Features.Add(sqlFeature.Id);
-                    log.Append("\nFeature Lanteria.ES.SharePoint_LanteriaSQL activated");
-                }
-                catch (Exception ex)
-                {
-                    log.Append("\nError occured during feature activation: " + ex.Message);
-                }
                 try
                 {
                     newWeb.Features.Add(webFeature.Id);
@@ -320,45 +318,49 @@ namespace FirstFloor.ModernUI.App
             SPFeatureDefinitionCollection collFeatureDefinitions = SPFarm.Local.FeatureDefinitions;
             SPFeatureDefinition siteFeature = collFeatureDefinitions.SingleOrDefault(sf => sf.DisplayName.Equals(Settings.Default.SiteFeature));
             SPFeatureDefinition webFeature = collFeatureDefinitions.SingleOrDefault(sf => sf.DisplayName.Equals(Settings.Default.WebFeature));
-            SPFeatureDefinition sqlFeature = collFeatureDefinitions.SingleOrDefault(sf => sf.DisplayName.Equals(Settings.Default.SqlFeature));
             SPFeatureDefinition contentFeature = collFeatureDefinitions.SingleOrDefault(sf => sf.DisplayName.Equals(Settings.Default.ContentFeature));
             //disable features first
-            log.Append("\nDisabling features...");
+            log.Append("\nDisabling features at "+ webURL + "...");
             using (SPSite siteCollection = new SPSite(webURL + "es/"))
             {
                 SPWeb newWeb = siteCollection.OpenWeb();
-                SPGroup esHR = newWeb.Site.RootWeb.Groups["ES HR"];
+                newWeb.AllowUnsafeUpdates = true;
+                SPGroup esHRAdmin = newWeb.Site.RootWeb.Groups["ES HR Admin"];
                 SPUser sysacc = newWeb.Site.RootWeb.EnsureUser("SHAREPOINT\\system");
+                try { sysacc.Groups.GetByName("ES HR Admin"); }
+                catch { esHRAdmin.AddUser(sysacc); }
+
                 SPClaimProviderManager cpm = SPClaimProviderManager.Local;
                 string username = Environment.UserDomainName + "\\" + Environment.UserName;
                 SPClaim userClaim = cpm.ConvertIdentifierToClaim(username, SPIdentifierTypes.WindowsSamAccountName);
                 SPUser me = newWeb.Site.RootWeb.EnsureUser(userClaim.ToEncodedString());
-                esHR.AddUser(sysacc);
-                esHR.AddUser(me);
-                newWeb.Site.RootWeb.Update();
+
+                try { esHRAdmin.AddUser(me); }
+                catch {
+                    //do nothing, current user is system account
+                 }
+                esHRAdmin.Update();
                 try
                 {
-                    newWeb.Features.Remove(contentFeature.Id, true);
+                    if (contentFeature != null)
+                    {
+                        newWeb.Features.Remove(contentFeature.Id, true);
+                    }
+                    
                 }
                 catch (Exception ex)
                 {
-                    log.Append("Error occured during feature deactivation: " + ex.Message);
+                    log.Append("\nError occured during feature deactivation: " + ex.Message);
                 }
                 try
                 {
-                    newWeb.Features.Remove(webFeature.Id, true);
+                    if (webFeature != null) {
+                        newWeb.Features.Remove(webFeature.Id, true);
+                    }
                 }
                 catch (Exception ex)
                 {
-                    log.Append("Error occured during feature deactivation: " + ex.Message);
-                }
-                try
-                {
-                    newWeb.Features.Remove(sqlFeature.Id, true);
-                }
-                catch (Exception ex)
-                {
-                    log.Append("Error occured during feature deactivation: " + ex.Message);
+                    log.Append("\nError occured during feature deactivation: " + ex.Message);
                 }
             }
 
@@ -366,11 +368,14 @@ namespace FirstFloor.ModernUI.App
             {
                 try
                 {
-                    siteCollection.Features.Remove(siteFeature.Id, true);
+                    if (siteFeature != null)
+                    {
+                        siteCollection.Features.Remove(siteFeature.Id, true);
+                    }
                 }
                 catch (Exception ex)
                 {
-                    log.Append("Error occured during feature deactivation: " + ex.Message);
+                    log.Append("\nError occured during feature deactivation: " + ex.Message);
                 }
             }
             return log.ToString();

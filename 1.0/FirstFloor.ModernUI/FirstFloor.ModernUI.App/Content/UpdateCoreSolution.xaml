@@ -13,7 +13,7 @@
         <StackPanel HorizontalAlignment="Left" Margin="0,0,0,272">
             <StackPanel Orientation="Horizontal">
                 <Button x:Name="GetWebs" Content="1.Get Web Apps" Click="GetWebs_Click"  Width="auto" />
-                <Button x:Name="BtnRetract" Content="2.Retract/Remove"  Margin="5,0,0,0" Width="auto" Visibility="Visible" Click="BtnRetract_Click"/>
+                <Button x:Name="BtnRetract" Content="2.Retract and Remove"  Margin="5,0,0,0" Width="auto" Visibility="Visible" Click="BtnRetract_Click"/>
                 <Button x:Name="BtnFileOpen" Content="3.Select WSP" Click="BtnFileOpen_Click" Margin="5,0,0,0" Width="auto" Visibility="Visible"/>
                 <Button x:Name="BtnDeploy" Content="4.Deploy" Margin="5,0,0,0" Width="auto" Visibility="Visible" Click="BtnDeploy_Click"/>
             </StackPanel>
@@ -37,9 +37,9 @@
                 </DataGrid.Columns>
             </DataGrid>
         </StackPanel>
-        <StackPanel x:Name="Log" Margin="0,332,0,-43" Visibility="Hidden">
+        <StackPanel x:Name="Log" Margin="0,332,0,-43" Visibility="Visible">
             <TextBlock Text="Events" FontWeight="Bold" Margin="0,0,0,8" />
-            <TextBox x:Name="TextEvents" Width="423" Height="193" HorizontalAlignment="Left" IsReadOnly="True" HorizontalScrollBarVisibility="Auto"  VerticalScrollBarVisibility="Auto" />
+            <TextBox x:Name="TextEvents" Height="193" HorizontalAlignment="Stretch" IsReadOnly="True" HorizontalScrollBarVisibility="Auto"  VerticalScrollBarVisibility="Auto" />
         </StackPanel>
 
     </Grid>

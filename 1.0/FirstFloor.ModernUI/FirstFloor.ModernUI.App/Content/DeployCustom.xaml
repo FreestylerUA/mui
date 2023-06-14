@@ -35,7 +35,7 @@
         </StackPanel>
         <StackPanel x:Name="Log" Margin="0,332,0,-43" Visibility="Hidden">
             <TextBlock Text="Events" FontWeight="Bold" Margin="0,0,0,8" />
-            <TextBox x:Name="TextEvents" Width="423" Height="193" HorizontalAlignment="Left" IsReadOnly="True" HorizontalScrollBarVisibility="Auto"  VerticalScrollBarVisibility="Auto" />
+            <TextBox x:Name="TextEvents" Width="423" Height="193" HorizontalAlignment="Stretch" IsReadOnly="True" HorizontalScrollBarVisibility="Auto"  VerticalScrollBarVisibility="Auto" />
         </StackPanel>
 
     </Grid>
