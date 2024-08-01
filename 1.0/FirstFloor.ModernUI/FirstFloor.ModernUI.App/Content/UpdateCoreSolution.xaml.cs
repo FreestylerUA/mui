@@ -88,14 +88,6 @@ namespace FirstFloor.ModernUI.App.Content
         private void GetWebs_Click(object sender, RoutedEventArgs e)
         {
             selectedWebApps.Clear();
-            /*var settigs = Settings.Default;
-            coresolution = SP.GetCoreSolution();
-            if (coresolution == null)
-            {
-                ModernDialog.ShowMessage("Core solution not found!\nCheck app settings!", "Error", MessageBoxButton.OK);
-                return;
-            }*/
-
             Dispatcher.Invoke(() =>
             {
                 progressbar.Visibility = Visibility.Visible;
@@ -229,7 +221,7 @@ namespace FirstFloor.ModernUI.App.Content
         {
             if (selectedWebApps.Count == 0)
             {
-                ModernDialog.ShowMessage("Please select at leas one Web Application!", "Error", MessageBoxButton.OK);
+                ModernDialog.ShowMessage("Please select at least one Web Application!", "Error", MessageBoxButton.OK);
                 return;
             }
             Dispatcher.Invoke(() =>
@@ -244,7 +236,7 @@ namespace FirstFloor.ModernUI.App.Content
                 LogMessage("\nDeploying...");
                 if (!SP.DeploySolution(solution, selectedWebApps))
                 {
-                    LogMessage("\nDeployment error: " + SP.SoltionDeploymentStatus(solution));
+                    LogMessage("\nDeployment error: " + SP.SolutionDeploymentStatus(solution));
                 }
                 else
                 {

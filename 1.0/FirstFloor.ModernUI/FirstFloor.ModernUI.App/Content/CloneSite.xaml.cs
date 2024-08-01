@@ -246,12 +246,12 @@ namespace FirstFloor.ModernUI.App.Content
                         if (!SP.DeploySolution("sharepointlearningkit.wsp", selectedWebApps))
                         {
                             LogMessage("\nSharePointLearningKit solution is not deployed.");
-                            LogMessage("\n" + SP.SoltionDeploymentStatus("sharepointlearningkit.wsp"));
+                            LogMessage("\n" + SP.SolutionDeploymentStatus("sharepointlearningkit.wsp"));
                         }
                         else
                         {
                             LogMessage("\nSharePointLearningKit solution deployed.");
-                            LogMessage("\n" + SP.SoltionDeploymentStatus("sharepointlearningkit.wsp"));
+                            LogMessage("\n" + SP.SolutionDeploymentStatus("sharepointlearningkit.wsp"));
                         }
                         
                         LogMessage("\nDeploying Lanteria Core solution...");
@@ -259,14 +259,14 @@ namespace FirstFloor.ModernUI.App.Content
                         if (!SP.DeploySolution("lanteria.effectivestaff.wsp", selectedWebApps))
                         {
                             LogMessage("\nlanteria.effectivestaff.wsp solution is not deployed.");
-                            LogMessage("\n" + SP.SoltionDeploymentStatus("lanteria.effectivestaff.wsp"));
+                            LogMessage("\n" + SP.SolutionDeploymentStatus("lanteria.effectivestaff.wsp"));
                             successStatus = false;
                             return;
                         }
                         else
                         {
                             LogMessage("\nlanteria.effectivestaff.wsp solution deployed.");
-                            LogMessage("\n" + SP.SoltionDeploymentStatus("lanteria.effectivestaff.wsp"));
+                            LogMessage("\n" + SP.SolutionDeploymentStatus("lanteria.effectivestaff.wsp"));
 
                         }
 
@@ -371,13 +371,13 @@ namespace FirstFloor.ModernUI.App.Content
                 if (!SP.DeploySolution(custom.Name, selectedWebApps))
                 {
                     LogMessage("\nCustom solution is not deployed.");
-                    LogMessage("\n" + SP.SoltionDeploymentStatus(custom.Name));
+                    LogMessage("\n" + SP.SolutionDeploymentStatus(custom.Name));
                     return;
                 }
                 else
                 {
                     LogMessage("\nCustom solution deployed.");
-                    LogMessage("\n" + SP.SoltionDeploymentStatus(custom.Name));
+                    LogMessage("\n" + SP.SolutionDeploymentStatus(custom.Name));
                 }
 
                 LogMessage("Activating features from custom solution...");

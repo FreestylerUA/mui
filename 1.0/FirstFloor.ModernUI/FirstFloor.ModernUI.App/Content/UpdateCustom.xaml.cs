@@ -9,13 +9,14 @@ using System.Windows.Forms;
 using FirstFloor.ModernUI.Windows.Controls;
 using System.Text.RegularExpressions;
 using System.Linq;
+using Microsoft.SharePoint;
 
 namespace FirstFloor.ModernUI.App.Content
 {
 
-    public partial class DeployCustom : System.Windows.Controls.UserControl
+    public partial class UpdateCustom : System.Windows.Controls.UserControl
     {
-        public DeployCustom()
+        public UpdateCustom()
         {
             InitializeComponent();
         }
@@ -26,7 +27,13 @@ namespace FirstFloor.ModernUI.App.Content
             public string Title { get; set; }
             public string Url { get; set; }
         }
+        public class siteCol
+        {
+            public bool IsSelected { get; set; }
+            public string Url { get; set; }
+        }
         public string webURL { get; set; }
+        public string siteURL { get; set; }
         public string filename;
         public string solution;
         private string eventLogMessage;
@@ -83,6 +90,7 @@ namespace FirstFloor.ModernUI.App.Content
                 {
                     progressbar.Visibility = Visibility.Hidden;
                     DG1.Visibility = Visibility.Visible;
+                    lblWebApps.Visibility = Visibility.Visible;
                     Log.Visibility = Visibility.Hidden;
                     BtnFileOpen.Visibility = Visibility.Hidden;
                 });
@@ -92,6 +100,7 @@ namespace FirstFloor.ModernUI.App.Content
             {
                 progressbar.Visibility = Visibility.Visible;
                 DG1.Visibility = Visibility.Hidden;
+                lblWebApps.Visibility = Visibility.Hidden;
             });
             worker.RunWorkerAsync();
         }
@@ -114,13 +123,51 @@ namespace FirstFloor.ModernUI.App.Content
                 if (DG1.CancelEdit())
                 {
                     DG1.Items.Refresh();
-                    BtnFileOpen.Visibility = Visibility.Visible;
+                    List<siteCol> siteColls = new List<siteCol>();
+                    List<SPSite> siteCollections = SP.GetAllSPSites().Where(s => s.WebApplication.GetResponseUri(0).AbsoluteUri == webURL).ToList();
+                    foreach (var site in siteCollections)
+                    {
+                        siteCol s = new siteCol();
+                        s.IsSelected = false;
+                        s.Url = site.Url;
+                        siteColls.Add(s);
+                    }
+                    DG2.ItemsSource = siteColls;
+                    DG2.Visibility = Visibility.Visible;
+                    lblSiteCols.Visibility = Visibility.Visible;
                 }
-
-
             }
             else
             {
+                DG2.Visibility = Visibility.Hidden;
+                lblSiteCols.Visibility = Visibility.Hidden;
+            }
+        }
+        private void CheckBox1_Click(object sender, RoutedEventArgs e)
+        {
+            var currentCB = (System.Windows.Controls.CheckBox)sender;
+            if (currentCB.IsChecked == true)
+            {
+                BtnFileOpen.Visibility = Visibility.Visible;
+                int rowindex = DG2.SelectedIndex;
+                var selected = DG2.Items[rowindex] as siteCol;
+                siteURL = selected.Url;
+                for (int i = 0; i < DG2.Items.Count; i++)
+                {
+                    if (rowindex != i)
+                    {
+                        var item = DG2.Items[i] as siteCol;
+                        item.IsSelected = false;
+                    }
+                }
+                if (DG2.CancelEdit())
+                {
+                    DG2.Items.Refresh();
+                }
+            }
+            else
+            {
+                siteURL = string.Empty;
                 BtnFileOpen.Visibility = Visibility.Hidden;
             }
         }
@@ -138,47 +185,16 @@ namespace FirstFloor.ModernUI.App.Content
                 case DialogResult.OK:
                     filename = fileDialog.FileName;
                     solution = fileDialog.SafeFileName;
-                    DG1.Visibility = Visibility.Hidden;
+                    //DG1.Visibility = Visibility.Hidden;
                     Log.Visibility = Visibility.Visible;
                     LogMessage("\nWeb Application selected: " + webURL);
                     LogMessage("\nCustom solution selected: " + filename);
-                    try
-                    {
-                        SPFarm.Local.Solutions.Add(filename);
-                    }
-                    catch (Exception ex)
-                    {
-                        ModernDialog.ShowMessage(ex.Message, "Error", MessageBoxButton.OK);
-                        string findGuid = ex.Message;
-                        MatchCollection guids = Regex.Matches(findGuid, @"(\{){0,1}[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}(\}){0,1}");
-                        for (int i = 0; i < guids.Count; i++)
-                        {
-                            string Match = guids[i].Value;
-                            SPSolution sol = SP.GetSolution(Match);
-                            if (!sol.Deployed)
-                            {
-                                MessageBoxResult rmsol = ModernDialog.ShowMessage("Solution "+ sol.Name+" is not deployed.\nRemove?", "", MessageBoxButton.YesNo);
-                                if (rmsol == MessageBoxResult.Yes)
-                                {
-                                    SPFarm.Local.Solutions.Remove(sol.Id);
-                                }
-                                else
-                                {
-                                    break;
-                                }
-                            }
-                            else
-                            {
-                                SPWebApplication wa = sol.DeployedWebApplications.FirstOrDefault();
-                            }
-                        }
-                    }
-                    LogMessage("\n" + SP.AddSolution(filename));
-                    MessageBoxResult alert = ModernDialog.ShowMessage("Deploy solution " + solution + " on selected Web Application?", "Custom solution deployment", MessageBoxButton.YesNo);
+                    MessageBoxResult alert = ModernDialog.ShowMessage("Deploy solution " + solution + " on selected Web Application and Site?", "Custom solution deployment", MessageBoxButton.YesNo);
+
+
                     if (alert == MessageBoxResult.Yes)
                      {
                          CustomSolutionDeploy();
-                           
                      }
                     break;
                 case DialogResult.Cancel:
@@ -204,6 +220,15 @@ namespace FirstFloor.ModernUI.App.Content
                 Collection<SPWebApplication> selectedWebApps = new Collection<SPWebApplication>();
                 SPWebApplication webApplication = SPWebApplication.Lookup(new Uri(webURL));
                 selectedWebApps.Add(webApplication);
+                SPSite selectedSiteCollection  = webApplication.Sites.Where(s => s.Url == siteURL).FirstOrDefault();
+
+                if (SPFarm.Local.Solutions.Any(x => x.Name.ToLower() == solution.ToLower()))
+                {
+                    //do solution retract
+                    LogMessage("\n" + SP.DeactivateFeaturesFromCustomSolution(solution, siteURL));
+                    LogMessage("\n" + SP.RetractSolution(solution));
+                    LogMessage("\n" + SP.AddSolution(filename));
+                }
                 if (!SP.DeploySolution(solution, selectedWebApps))
                 {
                     LogMessage("\nDeployment error: " + SP.SolutionDeploymentStatus(solution));
@@ -212,7 +237,7 @@ namespace FirstFloor.ModernUI.App.Content
                 {
                     LogMessage("\nCustom solution is deployed.");
                     LogMessage("\nActivating features...");
-                    LogMessage(SP.ActivateFeaturesFromCustomSolution(solution, webURL));
+                    LogMessage(SP.ActivateFeaturesFromCustomSolution(solution, siteURL));
                  }
             };
             deploy_custom.RunWorkerCompleted += (o, ea) =>

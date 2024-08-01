@@ -150,7 +150,26 @@ namespace FirstFloor.ModernUI.App
             }
             return log.ToString();
         }
-        public string SoltionDeploymentStatus(string sName)
+        public string RetractSolution(string solutionName)
+        {
+            StringBuilder log = new StringBuilder();
+            SPSolution solution = GetSolution(solutionName);
+            if (solution != null)
+            {
+                if (solution.DeployedWebApplications.Count > 0)
+                {
+                    solution.RetractLocal(solution.DeployedWebApplications);
+                }
+                SPFarm.Local.Solutions.Remove(solution.Id);
+                log.Append("Solution has been removed, please select new WSP file to deploy.");
+            }
+            else
+            {
+                log.Append("Solution already removed, please select new WSP file to deploy.");
+            }
+            return log.ToString();
+        }
+        public string SolutionDeploymentStatus(string sName)
         {
             SPSolution solution = farm.Solutions[sName];
             return solution.LastOperationDetails;
@@ -243,7 +262,7 @@ namespace FirstFloor.ModernUI.App
             }
             if (webfeature != null)
             {
-                if (ActivateWebFeature(webfeature, webURL + "es/"))
+                if (ActivateWebFeature(webfeature, webURL + "/es/"))
                 {
                     log.Append("\nWeb feature " + webfeature.DisplayName + " activated");
                 }
@@ -254,7 +273,7 @@ namespace FirstFloor.ModernUI.App
             }
             if (contentfeature != null)
             {
-                if (ActivateWebFeature(contentfeature, webURL + "es/"))
+                if (ActivateWebFeature(contentfeature, webURL + "/es/"))
                 {
                     log.Append("\nContent feature " + contentfeature.DisplayName + " activated");
                 }
@@ -262,6 +281,77 @@ namespace FirstFloor.ModernUI.App
                 {
                     log.Append("\nError activating Content feature " + contentfeature.DisplayName + "\n" + exception);
 
+                }
+            }
+            return log.ToString();
+        }
+
+        public string DeactivateFeaturesFromCustomSolution(string sName, string webURL)
+        {
+            StringBuilder log = new StringBuilder();
+            List<SPFeatureDefinition> features = GetFeaturesInSolution(sName);
+            SPFeatureDefinition siteFeature = features.FirstOrDefault(sf => sf.Scope.Equals(SPFeatureScope.Site));
+            SPFeatureDefinition contentFeature = features.FirstOrDefault(sf => sf.Scope.Equals(SPFeatureScope.Web) && (sf.ActivationDependencies.Count > 0 || sf.DisplayName.ToLower().Contains("content")));
+            SPFeatureDefinition webFeature = features.FirstOrDefault(sf => sf.Scope.Equals(SPFeatureScope.Web) && (contentFeature == null || contentFeature.Id != sf.Id));
+            //disable features first
+            log.Append("\nDisabling features at " + webURL + "...");
+            using (SPSite siteCollection = new SPSite(webURL + "/es/"))
+            {
+                SPWeb newWeb = siteCollection.OpenWeb();
+                newWeb.AllowUnsafeUpdates = true;
+                SPGroup esHRAdmin = newWeb.Site.RootWeb.Groups["ES HR Admin"];
+                SPUser sysacc = newWeb.Site.RootWeb.EnsureUser("SHAREPOINT\\system");
+                try { sysacc.Groups.GetByName("ES HR Admin"); }
+                catch { esHRAdmin.AddUser(sysacc); }
+
+                SPClaimProviderManager cpm = SPClaimProviderManager.Local;
+                string username = Environment.UserDomainName + "\\" + Environment.UserName;
+                SPClaim userClaim = cpm.ConvertIdentifierToClaim(username, SPIdentifierTypes.WindowsSamAccountName);
+                SPUser me = newWeb.Site.RootWeb.EnsureUser(userClaim.ToEncodedString());
+
+                try { esHRAdmin.AddUser(me); }
+                catch
+                {
+                    //do nothing, current user is system account
+                }
+                esHRAdmin.Update();
+                try
+                {
+                    if (contentFeature != null)
+                    {
+                        newWeb.Features.Remove(contentFeature.Id, true);
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    log.Append("\nError occurred during feature deactivation: " + ex.Message);
+                }
+                try
+                {
+                    if (webFeature != null)
+                    {
+                        newWeb.Features.Remove(webFeature.Id, true);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    log.Append("\nError occurred during feature deactivation: " + ex.Message);
+                }
+            }
+
+            using (SPSite siteCollection = new SPSite(webURL))
+            {
+                try
+                {
+                    if (siteFeature != null)
+                    {
+                        siteCollection.Features.Remove(siteFeature.Id, true);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    log.Append("\nError occurred during feature deactivation: " + ex.Message);
                 }
             }
             return log.ToString();

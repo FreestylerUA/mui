@@ -5,7 +5,7 @@
                   xmlns:app="clr-namespace:FirstFloor.ModernUI.App"
                   Title="Lanteria HR" IsTitleVisible="True"
                   ContentSource="/Pages/Actions.xaml"
-                  Width="800" Height="700" ResizeMode="NoResize" Icon="Assets/favicon.png">
+                  Width="1200" Height="900" ResizeMode="CanResize" Icon="Assets/favicon.png">
     
     <mui:ModernWindow.TitleLinks>
         <mui:Link DisplayName="Settings" Source="/Pages/Settings.xaml" />

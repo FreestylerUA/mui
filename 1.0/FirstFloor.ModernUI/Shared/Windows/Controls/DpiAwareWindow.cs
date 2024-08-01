@@ -1,4 +1,6 @@
-﻿using FirstFloor.ModernUI.Win32;
+﻿// Ignore Spelling: Dpi
+
+using FirstFloor.ModernUI.Win32;
 using Microsoft.Win32;
 using System;
 using System.Runtime.InteropServices;
@@ -17,7 +19,7 @@ namespace FirstFloor.ModernUI.Windows.Controls
         /// <summary>
         /// Occurs when the system or monitor DPI for this window has changed.
         /// </summary>
-        public event EventHandler DpiChanged;
+        public event EventHandler DpiChangedCustom;
 
         private HwndSource source;
         private DpiInformation dpiInfo;
@@ -187,7 +189,7 @@ namespace FirstFloor.ModernUI.Windows.Controls
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         protected virtual void OnDpiChanged(EventArgs e)
         {
-            var handler = this.DpiChanged;
+            var handler = this.DpiChangedCustom;
             if (handler != null) {
                 handler(this, e);
             }

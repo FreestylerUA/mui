@@ -11,6 +11,7 @@
             <mui:ModernTab.Links>
                 <mui:Link DisplayName="Update Core Solution" Source="/Content/UpdateCoreSolution.xaml" />
                 <mui:Link DisplayName="Deploy Custom Solution" Source="/Content/DeployCustom.xaml" />
+                <mui:Link DisplayName="Update Custom Solution" Source="/Content/UpdateCustom.xaml" />
                 <mui:Link DisplayName="Clone SPSite" Source="/Content/CloneSite.xaml" />
        
             </mui:ModernTab.Links>

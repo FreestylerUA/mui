@@ -14,6 +14,7 @@ namespace FirstFloor.ModernUI.App.Content
             SiteFeature.Text = Properties.Settings.Default.SiteFeature;
             WebFeature.Text = Properties.Settings.Default.WebFeature;
             ContentFeature.Text = Properties.Settings.Default.ContentFeature;
+            Path.Text = Properties.Settings.Default.Path;
         }
 
         private void Update_Click(object sender, System.Windows.RoutedEventArgs e)
@@ -25,6 +26,8 @@ namespace FirstFloor.ModernUI.App.Content
                 Properties.Settings.Default.SiteFeature = SiteFeature.Text;
                 Properties.Settings.Default.WebFeature = WebFeature.Text;
                 Properties.Settings.Default.ContentFeature = ContentFeature.Text;
+                Properties.Settings.Default.Path = Path.Text;
+                Properties.Settings.Default.Save();
                 ModernDialog.ShowMessage("Settings have been saved ", "App Properties", System.Windows.MessageBoxButton.OK);
             }
             catch (System.Exception ex)

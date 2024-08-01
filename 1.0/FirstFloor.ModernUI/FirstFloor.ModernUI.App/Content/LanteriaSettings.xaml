@@ -6,17 +6,25 @@
              xmlns:mui="http://firstfloorsoftware.com/ModernUI"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="357.609">
-    <Grid>
+    <Grid Margin="0,0,-162,0">
         <Grid.RowDefinitions>
             <RowDefinition Height="58*"/>
             <RowDefinition Height="17*"/>
         </Grid.RowDefinitions>
-        <ScrollViewer Margin="0,0,-202,54">
+        <ScrollViewer Margin="0,0,93,37" RenderTransformOrigin="0.5,0.5" Grid.RowSpan="2">
+            <ScrollViewer.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="0.041"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </ScrollViewer.RenderTransform>
             <StackPanel x:Name="Panel" MinWidth="150" Width="586">
                 <TextBlock Text="Lanteria HR Settings" Style="{StaticResource Heading2}" Margin="0,0,0,8" />
-                <Grid HorizontalAlignment="Left" Width="435" Height="147">
+                <Grid HorizontalAlignment="Left" Width="435" Height="231">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" MinWidth="130" />
                         <ColumnDefinition MinWidth="120"/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
@@ -25,31 +33,34 @@
                         <RowDefinition />
                         <RowDefinition />
                         <RowDefinition />
+                        <RowDefinition />
                     </Grid.RowDefinitions>
 
-                    <TextBlock Text="Core Solution Name:" VerticalAlignment="Center" Margin="0,0,16,4" />
-                    <TextBox Name="sName" Grid.Column="1"  VerticalAlignment="Center" Margin="0,0,33,4" />
+                    <TextBlock Text="Core Solution Name:" VerticalAlignment="Center" Margin="0,0,16,0" Height="16" />
+                    <TextBox Name="sName" Grid.Column="1"  VerticalAlignment="Center" Margin="10,0,23,0" Height="22" />
 
-                    <TextBlock Grid.Row="1" Text="Core Solution ID:" VerticalAlignment="Center" Margin="0,0,16,4" />
-                    <TextBox Name="sID" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Margin="0,0,33,4" />
+                    <TextBlock Grid.Row="1" Text="Core Solution ID:" VerticalAlignment="Center" Margin="0,0,16,0" Height="16" />
+                    <TextBox Name="sID" Grid.Row="1" Grid.Column="1" VerticalAlignment="Top" Margin="10,10,23,0" Height="22" />
 
-                    <TextBlock Grid.Row="2" Text="Site Feature:" VerticalAlignment="Center" Margin="0,0,16,4" />
-                    <TextBox Name="SiteFeature" Grid.Row="2" Grid.Column="2" VerticalAlignment="Center" Margin="0,0,33,4" />
-                    
-                    <TextBlock Grid.Row="3" Text="WEB Feature:" VerticalAlignment="Center" Margin="0,0,16,4" />
-                    <TextBox Name="WebFeature" Grid.Row="3" Grid.Column="3" VerticalAlignment="Center" Margin="0,0,33,4" />
-                    
-                    <TextBlock Grid.Row="4" Text="Content Feature:" VerticalAlignment="Center" Margin="0,0,16,4" />
-                    <TextBox Name="ContentFeature" Grid.Row="4" Grid.Column="4" VerticalAlignment="Center" Margin="0,0,33,4" />
+                    <TextBlock Grid.Row="2" Text="Site Feature:" VerticalAlignment="Center" Margin="0,0,16,0" Height="16" />
+                    <TextBox Name="SiteFeature" Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" Margin="10,0,23,0" Height="22" />
 
+                    <TextBlock Grid.Row="3" Text="WEB Feature:" VerticalAlignment="Center" Margin="0,0,16,0" Height="16" />
+                    <TextBox Name="WebFeature" Grid.Row="3" Grid.Column="1" VerticalAlignment="Top" Margin="10,10,23,0" Height="22" />
+
+                    <TextBlock Grid.Row="4" Text="Content Feature:" VerticalAlignment="Center" Margin="0,0,16,0" Height="16" />
+                    <TextBox Name="ContentFeature" Grid.Row="4" Grid.Column="1" VerticalAlignment="Top" Margin="10,7,23,0" Height="22" />
+
+                    <TextBlock Grid.Row="5" Text="Path to wsp files:" VerticalAlignment="Top" Margin="0,12,17,0" Height="16" />
+                    <TextBox Name="Path" Grid.Row="5" Grid.Column="1" VerticalAlignment="Top" Margin="10,10,23,0" Height="22" />
                 </Grid>
 
             </StackPanel>
 
 
         </ScrollViewer>
-        <StackPanel Margin="0,178,-44,10">
-            <Button x:Name="Update"  VerticalAlignment="Center" Height="28" Content=" Update Settings" HorizontalAlignment="Center" Width="150" Margin="0" Click="Update_Click"  />
+        <StackPanel Margin="0,34,50,-10" Grid.Row="1">
+            <Button x:Name="Update" Height="28" Content=" Update Settings" Width="150" Click="Update_Click"  />
         </StackPanel>
     </Grid>
 </UserControl>
